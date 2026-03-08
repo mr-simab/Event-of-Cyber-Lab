@@ -23,7 +23,7 @@ function loadEnv(filePath) {
 }
 
 const env = loadEnv(path.join(ROOT, ".env"));
-const DEFAULT_BACKEND_URL = "http://localhost:8000";
+const DEFAULT_BACKEND_URL = "https://eoc-lab.onrender.com";
 
 function getBackendUrl(rawFromEnv) {
   const candidate = String(rawFromEnv || "").trim();
