@@ -1,0 +1,114 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event of Cyber Workshop | Challenge Discovery</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <main class="page">
+    <div class="desktop-shell">
+      <aside class="sidebar left">
+        <section class="widget">
+          <h3>System Clock</h3>
+          <div class="clock-time">--:--:--</div>
+          <div class="clock-date">---</div>
+        </section>
+        <section class="widget">
+          <h3>Core Monitor</h3>
+          <div class="meter-row"><span>CPU Load</span><strong data-value="cpu">0%</strong></div>
+          <div class="fake-progress" data-meter="cpu"><span></span></div>
+          <div class="meter-row"><span>RAM Usage</span><strong data-value="ram">0%</strong></div>
+          <div class="fake-progress" data-meter="ram"><span></span></div>
+          <div class="meter-row"><span>Net Traffic</span><strong data-value="net">0%</strong></div>
+          <div class="fake-progress" data-meter="net"><span></span></div>
+          <div class="net-row"><span>UPLINK</span><strong data-net="up">0 Mbps</strong></div>
+          <div class="net-row"><span>DOWNLINK</span><strong data-net="down">0 Mbps</strong></div>
+        </section>
+        <section class="widget">
+          <h3>Processor Grid</h3>
+          <div class="mini-grid">
+            <div class="mini-card"><div class="title">CPU #3</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">CPU #4</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">Packet I/O</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">Cache Temp</div><div class="sparkline" data-spark></div></div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="terminal" aria-label="Discovery Terminal">
+        <header class="terminal-header">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <strong>RESCUEVAULT://CHALLENGE-NODE</strong>
+        </header>
+        <div class="terminal-body">
+          <div class="terminal-topgrid">
+            <div class="term-mini"><div class="title">Recon Grid</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Route Drift</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Probe Rate</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Firewall Heat</div><div class="sparkline" data-spark></div></div>
+          </div>
+          <pre id="log" class="log"></pre>
+          <div class="action-zone">
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar right">
+        <section class="widget">
+          <h3>Global Monitoring</h3>
+          <div class="globe-stack">
+            <div class="globe"></div>
+            <div class="orbit"></div>
+            <div class="mini-globe"></div>
+          </div>
+        </section>
+        <section class="widget">
+          <h3>Neural Network</h3>
+          <div class="neural-net"></div>
+        </section>
+        <section class="widget">
+          <h3>Auto Command Stream</h3>
+          <ul class="command-feed" data-auto-feed>
+            <li>&gt; enumerate hidden routes</li>
+            <li>&gt; brute path normalization</li>
+            <li>&gt; pivot ../../ vectors</li>
+            <li>&gt; inspect login artifacts</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/dashboard.js"></script>
+  <script src="../assets/terminal.js"></script>
+  <script>
+    const challengeMsg = document.getElementById('challenge-msg');
+
+    TerminalFX.run({
+   speed: 22,
+   lineDelay: 50,
+   lines: [
+        { text: '                                  System Booting...', className: 'challenge' },
+        { text: '                               Entering Cyber Arena...', className: 'challenge' },
+        '',
+        '',
+        '                                  Challenge Awaits.',
+        '                                 Can you solve it?',
+        '',
+        '                           Only the sharpest minds proceed.',
+        '',
+        '',
+        { text: '                                   Your Mission:', className: 'challenge' },
+        { text: '                                                 Find the Login Page', className: 'hint' }
+    ],
+      onComplete: function () {
+        if (challengeMsg) {
+          challengeMsg.classList.remove('hidden');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

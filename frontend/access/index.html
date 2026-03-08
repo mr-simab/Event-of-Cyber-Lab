@@ -1,0 +1,198 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event of Cyber Workshop | Final Access</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <main class="page">
+    <div id="celebration-layer" class="celebration-layer hidden" aria-hidden="true"></div>
+    <div class="desktop-shell">
+      <aside class="sidebar left">
+        <section class="widget">
+          <h3>System Clock</h3>
+          <div class="clock-time">--:--:--</div>
+          <div class="clock-date">---</div>
+        </section>
+        <section class="widget">
+          <h3>Disciple Metrics</h3>
+          <div class="meter-row"><span>Signal Discipline</span><strong>96%</strong></div>
+          <div class="fake-progress" data-auto><span></span></div>
+          <div class="meter-row"><span>Threat Insight</span><strong>91%</strong></div>
+          <div class="fake-progress" data-auto><span></span></div>
+          <div class="meter-row"><span>Ops Focus</span><strong>94%</strong></div>
+          <div class="fake-progress" data-auto><span></span></div>
+        </section>
+        <section class="widget">
+          <h3>Processor Grid</h3>
+          <div class="mini-grid">
+            <div class="mini-card"><div class="title">DISCIPLE CPU</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">OPS CORE</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">KNOWLEDGE BUS</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">MISSION I/O</div><div class="sparkline" data-spark></div></div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="terminal" aria-label="Final Terminal">
+        <header class="terminal-header">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <strong>RESCUEVAULT://INITIATION</strong>
+        </header>
+        <div class="terminal-body final-layout">
+          <div class="terminal-topgrid">
+            <div class="term-mini"><div class="title">Global Trust</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Node Rank</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Cyber Focus</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Mentor Link</div><div class="sparkline" data-spark></div></div>
+          </div>
+          <pre id="log" class="log"></pre>
+          <article id="guru-panel" class="mini-terminal guru-panel hidden">
+            <header class="terminal-header">
+              <div class="terminal-dots"><span></span><span></span><span></span></div>
+              <strong>EOC NODE</strong>
+            </header>
+            <div class="guru-bg">
+              <img class="guru-photo" src="../lib/guru.png" alt="EOC">
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="sidebar right">
+        <section class="widget">
+          <h3>Global Monitoring</h3>
+          <div class="globe-stack">
+            <div class="globe"></div>
+            <div class="orbit"></div>
+            <div class="mini-globe"></div>
+          </div>
+        </section>
+        <section class="widget">
+          <h3>Neural Network</h3>
+          <div class="neural-net"></div>
+        </section>
+        <section class="widget">
+          <h3>Auto Command Stream</h3>
+          <ul class="command-feed" data-auto-feed>
+            <li>&gt; elevate disciple channel</li>
+            <li>&gt; trust fabric synchronized</li>
+            <li>&gt; guru node connected</li>
+            <li>&gt; workshop mission active</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/dashboard.js"></script>
+  <script src="../assets/terminal.js"></script>
+  <script>
+    const guruPanel = document.getElementById('guru-panel');
+    const celebrationLayer = document.getElementById('celebration-layer');
+    let audioCtx;
+
+    function playCelebrationSound() {
+      try {
+        const AudioContextRef = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextRef) return;
+
+        if (!audioCtx) {
+          audioCtx = new AudioContextRef();
+        }
+
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const now = audioCtx.currentTime;
+        const master = audioCtx.createGain();
+        master.gain.setValueAtTime(0.0001, now);
+        master.gain.exponentialRampToValueAtTime(0.2, now + 0.05);
+        master.gain.exponentialRampToValueAtTime(0.0001, now + 2.4);
+        master.connect(audioCtx.destination);
+
+        const notes = [523.25, 659.25, 783.99, 1046.5, 1318.51];
+        notes.forEach(function (freq, i) {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + i * 0.09);
+
+          gain.gain.setValueAtTime(0.0001, now + i * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.2, now + i * 0.09 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.09 + 0.5);
+
+          osc.connect(gain);
+          gain.connect(master);
+
+          osc.start(now + i * 0.09);
+          osc.stop(now + i * 0.09 + 0.55);
+        });
+      } catch (_) {
+      }
+    }
+
+    function runCelebration() {
+      playCelebrationSound();
+      celebrationLayer.classList.remove('hidden');
+      celebrationLayer.innerHTML = '';
+
+      for (let i = 0; i < 90; i += 1) {
+        const star = document.createElement('span');
+        star.className = 'celebration-star';
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${-10 - (Math.random() * 25)}vh`;
+        star.style.animationDuration = `${2.8 + Math.random() * 3.2}s`;
+        star.style.animationDelay = `${Math.random() * 1.6}s`;
+        star.style.opacity = `${0.4 + Math.random() * 0.6}`;
+        star.style.transform = `scale(${0.6 + Math.random() * 1.2})`;
+        celebrationLayer.appendChild(star);
+      }
+
+      setTimeout(function () {
+        celebrationLayer.classList.add('hidden');
+        celebrationLayer.innerHTML = '';
+      }, 7200);
+    }
+
+    function setupAudioFallback() {
+      function unlockAndPlay() {
+        playCelebrationSound();
+        window.removeEventListener('pointerdown', unlockAndPlay);
+        window.removeEventListener('keydown', unlockAndPlay);
+      }
+
+      window.addEventListener('pointerdown', unlockAndPlay, { once: true });
+      window.addEventListener('keydown', unlockAndPlay, { once: true });
+    }
+
+    if (sessionStorage.getItem('eoc-auth') !== 'granted') {
+      window.location.replace('../login/');
+    } else {
+      runCelebration();
+      setupAudioFallback();
+
+      TerminalFX.run({
+        speed: 14,
+        lineDelay: 30,
+        lines: [
+        {text: '                         [ACCESS] Security layers bypassed.', className: 'challenge'},
+        '',
+        {text: '                              Nice... WELCOME Warrior...', className: 'hint'},
+        '',
+         {text: '                                 To Event Of Cyber ', className: 'hint'},
+         '',
+        '                  Think Before You Click - Securing Minds in a Connected World !'
+        ],
+        onComplete: function () {
+          guruPanel.classList.remove('hidden');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

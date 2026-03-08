@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event of Cyber Workshop | Landing Terminal</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <main class="page">
+    <div class="desktop-shell">
+      <aside class="sidebar left">
+        <section class="widget">
+          <h3>System Clock</h3>
+          <div class="clock-time">--:--:--</div>
+          <div class="clock-date">---</div>
+        </section>
+        <section class="widget">
+          <h3>Core Monitor</h3>
+          <div class="meter-row"><span>CPU Load</span><strong data-value="cpu">0%</strong></div>
+          <div class="fake-progress" data-meter="cpu"><span></span></div>
+          <div class="meter-row"><span>RAM Usage</span><strong data-value="ram">0%</strong></div>
+          <div class="fake-progress" data-meter="ram"><span></span></div>
+          <div class="meter-row"><span>Net Traffic</span><strong data-value="net">0%</strong></div>
+          <div class="fake-progress" data-meter="net"><span></span></div>
+          <div class="net-row"><span>UPLINK</span><strong data-net="up">0 Mbps</strong></div>
+          <div class="net-row"><span>DOWNLINK</span><strong data-net="down">0 Mbps</strong></div>
+        </section>
+        <section class="widget">
+          <h3>Processor Grid</h3>
+          <div class="mini-grid">
+            <div class="mini-card"><div class="title">CPU #1</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">CPU #2</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">GPU #1</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">I/O BUS</div><div class="sparkline" data-spark></div></div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="terminal" aria-label="Workshop Terminal">
+        <header class="terminal-header">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <strong>RESCUEVAULT://EOC-TERMINAL</strong>
+        </header>
+        <div class="terminal-body">
+          <div class="terminal-topgrid">
+            <div class="term-mini"><div class="title">Traffic UP</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Traffic DOWN</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Endpoint Scan</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Threat Pulse</div><div class="sparkline" data-spark></div></div>
+          </div>
+          <pre id="log" class="log"></pre>
+          <div class="action-zone">
+            <button id="enter-btn" class="btn hidden" type="button">Enter the Matrix</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar right">
+        <section class="widget">
+          <h3>Global Monitoring</h3>
+          <div class="globe-stack">
+            <div class="globe"></div>
+            <div class="orbit"></div>
+            <div class="mini-globe"></div>
+          </div>
+        </section>
+        <section class="widget">
+          <h3>Neural Network</h3>
+          <div class="neural-net"></div>
+        </section>
+        <section class="widget">
+          <h3>Auto Command Stream</h3>
+          <ul class="command-feed" data-auto-feed>
+            <li>&gt; boot cyber-dashboard</li>
+            <li>&gt; fetch threat matrix</li>
+            <li>&gt; mount osint channels</li>
+            <li>&gt; initialize secops grid</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="assets/dashboard.js"></script>
+  <script src="assets/terminal.js"></script>
+  <script>
+    const enterBtn = document.getElementById('enter-btn');
+
+    TerminalFX.run({
+      speed: 22,
+      lineDelay: 50,
+      lines: [
+       { text: '  [SYSTEM]  C:\\users\\matrix> init_cyberspace_workshop.exe', className: 'challenge' },
+        '',
+        '',
+        '',
+        '                                  EVENT OF CYBER',
+        '                              A Cyber Security WORKSHOP',
+        '',
+        '                 "Think Before You Click - Securing Minds in a Connected World"',
+        '',
+        '',
+        {text: '                       Organized By:', className: 'challenge'},
+        {text: '                        > Department of Computer Science (Cyber Security)', className: 'hint' },
+        {text: '                        > Team RescueVault', className: 'hint'},
+        ''
+      ],
+      onComplete: function () {
+        enterBtn.classList.remove('hidden');
+      }
+    });
+
+    enterBtn.addEventListener('click', function () {
+      window.location.href = './challenge/';
+    });
+  </script>
+</body>
+</html>

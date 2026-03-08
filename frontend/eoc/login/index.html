@@ -1,0 +1,161 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event of Cyber Workshop | Authentication Challenge</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+  <main class="page">
+    <div class="desktop-shell">
+      <aside class="sidebar left">
+        <section class="widget">
+          <h3>System Clock</h3>
+          <div class="clock-time">--:--:--</div>
+          <div class="clock-date">---</div>
+        </section>
+        <section class="widget">
+          <h3>Core Monitor</h3>
+          <div class="meter-row"><span>CPU Load</span><strong data-value="cpu">0%</strong></div>
+          <div class="fake-progress" data-meter="cpu"><span></span></div>
+          <div class="meter-row"><span>RAM Usage</span><strong data-value="ram">0%</strong></div>
+          <div class="fake-progress" data-meter="ram"><span></span></div>
+          <div class="meter-row"><span>Net Traffic</span><strong data-value="net">0%</strong></div>
+          <div class="fake-progress" data-meter="net"><span></span></div>
+          <div class="net-row"><span>UPLINK</span><strong data-net="up">0 Mbps</strong></div>
+          <div class="net-row"><span>DOWNLINK</span><strong data-net="down">0 Mbps</strong></div>
+        </section>
+        <section class="widget">
+          <h3>Processor Grid</h3>
+          <div class="mini-grid">
+            <div class="mini-card"><div class="title">AUTH CPU</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">TOKEN CPU</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">HASH BUS</div><div class="sparkline" data-spark></div></div>
+            <div class="mini-card"><div class="title">BRUTE RATE</div><div class="sparkline" data-spark></div></div>
+          </div>
+        </section>
+      </aside>
+
+      <section class="terminal" aria-label="Authentication Terminal">
+        <header class="terminal-header">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <strong>RESCUEVAULT://AUTH-GATE</strong>
+        </header>
+        <div class="terminal-body">
+          <div class="terminal-topgrid">
+            <div class="term-mini"><div class="title">JWT Trace</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Hash Stress</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Session Sync</div><div class="sparkline" data-spark></div></div>
+            <div class="term-mini"><div class="title">Gate Pressure</div><div class="sparkline" data-spark></div></div>
+          </div>
+          <pre id="log" class="log"></pre>
+          <div class="action-zone">
+            <form id="login-form" class="login-form hidden" autocomplete="off">
+              <label>
+                USERNAME
+                <input type="text" id="username" name="username" required>
+              </label>
+              <label>
+                PASSWORD
+                <input type="password" id="password" name="password" required>
+              </label>
+              <button class="btn" type="submit">Authenticate</button>
+              <div id="error" class="error" role="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar right">
+        <section class="widget">
+          <h3>Global Monitoring</h3>
+          <div class="globe-stack">
+            <div class="globe"></div>
+            <div class="orbit"></div>
+            <div class="mini-globe"></div>
+          </div>
+        </section>
+        <section class="widget">
+          <h3>Neural Network</h3>
+          <div class="neural-net"></div>
+        </section>
+        <section class="widget">
+          <h3>Auto Command Stream</h3>
+          <ul class="command-feed" data-auto-feed>
+            <li>&gt; decode auth payload</li>
+            <li>&gt; validate credential map</li>
+            <li>&gt; inspect weak password channel</li>
+            <li>&gt; stage access handover</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/dashboard.js"></script>
+  <script src="../assets/terminal.js"></script>
+  <script src="../assets/config.js"></script>
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const errorEl = document.getElementById('error');
+
+    TerminalFX.run({
+      speed: 22,
+      lineDelay: 50,
+     lines: [
+        '                    [ALERT] Unauthorized route discovery detected.',
+        '',
+        '                         Wow... you found the login page...',
+        '',
+        '',
+        { text: '                            Now your next challenge...',  className: 'challenge' },
+        '',
+        { text: '                                            Crack this authentication...',  className: 'hint' }
+     ],
+      onComplete: function () {
+        loginForm.classList.remove('hidden');
+      }
+    });
+
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      const backendUrl = (
+        window.APP_CONFIG &&
+        typeof window.APP_CONFIG.BACKEND_URL === 'string' &&
+        window.APP_CONFIG.BACKEND_URL.trim()
+      )
+        ? window.APP_CONFIG.BACKEND_URL.trim().replace(/\/+$/, '')
+        : '';
+
+      if (!backendUrl) {
+        errorEl.textContent = 'Missing BACKEND_URL configuration.';
+        return;
+      }
+
+      fetch(backendUrl + '/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, password: password })
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          if (data && data.success === true) {
+            errorEl.textContent = '';
+            sessionStorage.setItem('eoc-auth', 'granted');
+            window.location.href = '../access/';
+            return;
+          }
+          errorEl.textContent = 'Access denied. Invalid credentials.';
+        })
+        .catch(function () {
+          errorEl.textContent = 'Unable to connect to backend.';
+        });
+    });
+  </script>
+</body>
+</html>
