@@ -2,6 +2,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 
+// Load environment variables from .env
 function loadEnv(filePath) {
   const out = {};
   if (!fs.existsSync(filePath)) return out;
@@ -24,124 +25,85 @@ function loadEnv(filePath) {
 
 const env = loadEnv(path.join(__dirname, ".env"));
 const PORT = Number(process.env.PORT || 8000);
-const DEFAULT_FRONTEND_URL = "http://localhost:3000";
 
-function getFrontendUrl(rawFromEnv) {
-  const candidate = String(rawFromEnv || "").trim();
-  if (!candidate) return DEFAULT_FRONTEND_URL;
-
-  try {
-    const parsed = new URL(candidate);
-
-    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-      return DEFAULT_FRONTEND_URL;
-    }
-
-    return parsed.origin;
-  } catch {
-    return DEFAULT_FRONTEND_URL;
-  }
-}
-
-const FRONTEND_URL = getFrontendUrl(env.FRONTEND_URL);
+// Credentials
 const USERNAME = env.USERNAME || "eoc";
 const USER_PASSWORD = env.USER_PASSWORD || "password123";
 
-function isAllowedOrigin(origin) {
-  if (!origin) return true;
-  return origin === FRONTEND_URL;
-}
-
+// Set CORS headers
 function setCors(res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Allow any origin
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
 }
 
 const server = http.createServer((req, res) => {
-
-  const origin = req.headers.origin || "";
   setCors(res);
 
-  if (!isAllowedOrigin(origin)) {
-    res.writeHead(403, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ success: false, message: "Origin not allowed" }));
-    return;
-  }
-
+  // Respond to preflight OPTIONS
   if (req.method === "OPTIONS") {
     res.writeHead(204);
     res.end();
     return;
   }
 
+  // Health check
   if (req.url === "/health" && req.method === "GET") {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ status: "ok" }));
     return;
   }
 
+  // Auth endpoint
   if (req.url === "/auth" && req.method === "POST") {
-
     let body = "";
 
     req.on("data", chunk => {
       body += chunk;
-
-      if (body.length > 1024 * 16) {
-        req.destroy();
-      }
+      if (body.length > 1024 * 16) req.destroy();
     });
 
     req.on("end", () => {
-
       let parsed = {};
-
       try {
-
         body = body.trim();
 
         // Detect JSON automatically
         if (body.startsWith("{")) {
           parsed = JSON.parse(body);
-        }
-
-        // Otherwise treat as form data
-        else {
+        } else {
           parsed = Object.fromEntries(new URLSearchParams(body));
         }
-
       } catch {
         res.writeHead(400, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ success: false, message: "Invalid request body" }));
         return;
       }
 
+      // Check credentials
       const ok =
         String(parsed.username || "").trim() === USERNAME &&
         String(parsed.password || "") === USER_PASSWORD;
 
       if (!ok) {
         res.writeHead(401, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({
-          success: false,
-          message: "Invalid credentials"
-        }));
+        res.end(JSON.stringify({ success: false, message: "Invalid credentials" }));
         return;
       }
 
+      // Success
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ success: true }));
-
     });
 
     return;
   }
 
+  // 404 fallback
   res.writeHead(404, { "Content-Type": "application/json" });
   res.end(JSON.stringify({ success: false, message: "Not found" }));
 });
 
 server.listen(PORT, () => {
-  console.log(`Backend running on http://localhost:${PORT}`);
+  console.log(`Backend running on port ${PORT} (CORS enabled for all origins)`);
 });
