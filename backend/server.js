@@ -86,7 +86,7 @@ const server = http.createServer((req, res) => {
         String(parsed.password || "") === USER_PASSWORD;
 
       if (!ok) {
-        res.writeHead(401, { "Content-Type": "application/json" });
+        res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ success: false, message: "Invalid credentials" }));
         return;
       }
