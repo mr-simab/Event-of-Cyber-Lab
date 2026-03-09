@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg-base: #01070f;
   --bg-mid: #03162b;
   --panel: rgba(4, 24, 38, 0.74);
@@ -450,6 +450,21 @@ body::after {
   display: none !important;
 }
 
+.organizerd {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--cyan);
+  text-shadow:  0 0 8px rgba(121, 247, 255, 0.55);
+}
+
+.organizer {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--green);
+  text-shadow: 0 0 8px rgba(109, 255, 191, 0.45);
+}
 .challenge {
   font-weight: 700;
   letter-spacing: 0.04em;
